@@ -62,12 +62,8 @@ class AllUsers extends React.Component {
 					</Modal.Header>
 					<Modal.Body>User : {deleteUserTitle}</Modal.Body>
 					<Modal.Footer>
-						<Button variant="secondary" onClick={this.handleClose}>
-							No
-  				</Button>
-						<Button variant="danger" onClick={this.deleteUser}>
-							Yes
-  				</Button>
+						<Button variant="secondary" onClick={this.handleClose}>	No </Button>
+						<Button variant="danger" onClick={this.deleteUser}>Yes</Button>
 					</Modal.Footer>
 				</Modal>
 			</>
