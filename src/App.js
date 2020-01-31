@@ -14,24 +14,19 @@ class App extends React.Component {
     }
   }
 
-
   componentDidMount() {
     axios.get(`http://192.168.2.65:3030/posts`)
       .then(res => this.setState({ users: res.data.data }))
       .catch((err) => console.log("error"));
   }
 
-  getUsers = () => {
-    axios.get(`http://192.168.2.65:3030/posts`)
-      .then(res => this.setState({ users: res.data.data }))
-      .catch((err) => console.log(err));
-  }
+  getUsers = () => axios.get(`http://192.168.2.65:3030/posts`)
+    .then(res => this.setState({ users: res.data.data }))
+    .catch((err) => console.log(err));
 
-  findUser = (event) => {
-    this.setState({
-      _id: event.target.id,
-    });
-  }
+  findUser = (event) => this.setState({ _id: event.target.id })
+
+  userDeletedFlag = () => this.setState({ _id: '' }) // If user delete and his profile is still displaying so for that
 
   render() {
     const { users, _id } = this.state;
@@ -39,7 +34,7 @@ class App extends React.Component {
       <div className="flexContainer">
         <div className="users">
           <center><h2> User List </h2></center>
-          <AllUsers users={users} getUsers={this.getUsers} findUser={this.findUser} />
+          <AllUsers users={users} getUsers={this.getUsers} userDeletedFlag={this.userDeletedFlag} findUser={this.findUser} />
         </div>
         <div className="singleUser">
           <center><h2> Profile </h2></center>

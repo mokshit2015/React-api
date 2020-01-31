@@ -15,8 +15,10 @@ class SingleUser extends React.Component {
 			_id: '',
 			body: '',
 			title: '',
+			userId: '',
 			UpdatedBody: '',
 			updatedTitle: '',
+			updatedUserId: '',
 			show: false
 		}
 	}
@@ -29,54 +31,40 @@ class SingleUser extends React.Component {
 					body: res.data.body,
 					title: res.data.title,
 					UpdatedBody: res.data.body,
-					updatedTitle: res.data.title
-				}))
-				.catch((err) => console.log("error"));
+					updatedTitle: res.data.title,
+					updatedUserId: res.data.userId
+				})).catch((err) => console.log("error"));
 		}
 	}
 
-	handleShow = () => {
-		this.setState({
-			show: true,
-		});
-	}
+	handleShow = () => this.setState({ show: true });
 
-	handleClose = () => {
-		this.setState({
-			show: false
-		});
-	}
+	handleClose = () => this.setState({ show: false });
 
-	dataUpdate = (event) => {
-		this.setState({
-			[event.target.name]: event.target.value
-		});
-	}
+	dataUpdate = (event) => this.setState({ [event.target.name]: event.target.value });
 
-	dataUpdateAPI = () => {
-		const { UpdatedBody, updatedTitle } = this.state;
+
+	updateUser = () => {
+		const { UpdatedBody, updatedTitle, updatedUserId } = this.state;
 		const { _id } = this.props;
 		axios.put(`http://192.168.2.65:3030/posts/${_id}`, {
 			title: updatedTitle,
 			body: UpdatedBody,
-		})
-			.then(res => {
-				this.setState({
-					show: false,
-					title: updatedTitle,
-					body: UpdatedBody
-
-				})
-			}).then(
-				this.props.getUsers
-			)
-
+			userId: updatedUserId
+		}).then(res => {
+			this.setState({
+				show: false,
+				title: updatedTitle,
+				body: UpdatedBody,
+				userId: updatedUserId
+			})
+		}).then(this.props.getUsers)
 	}
 
 
 	render() {
-		const { _id, title, body, show, UpdatedBody, updatedTitle } = this.state;
-		return (
+		const { _id, title, body, show, UpdatedBody, updatedTitle, updatedUserId } = this.state;
+		return (_id !== '' &&
 			<>
 				<div className="user-card">
 					<h2> Title : {title} </h2>
@@ -90,11 +78,10 @@ class SingleUser extends React.Component {
 					</Modal.Header>
 					<Modal.Body>
 						<Form>
-
 							<Form.Group as={Row} controlId="formPlaintextEmail">
 								<Form.Label column sm="3">
 									Title :
-                    </Form.Label>
+                </Form.Label>
 								<Col sm="9">
 									<input type="text" name="updatedTitle" value={updatedTitle} className="form-control" onChange={this.dataUpdate} />
 								</Col>
@@ -107,12 +94,19 @@ class SingleUser extends React.Component {
 									<input type="text" name="UpdatedBody" value={UpdatedBody} className="form-control" onChange={this.dataUpdate} />
 								</Col>
 							</Form.Group>
-
+							<Form.Group as={Row} controlId="formPlaintextEmail">
+								<Form.Label column sm="3">
+									User Id :
+                    </Form.Label>
+								<Col sm="9">
+									<input type="text" name="updatedUserId" value={updatedUserId} className="form-control" onChange={this.dataUpdate} />
+								</Col>
+							</Form.Group>
 						</Form>
 					</Modal.Body>
 					<Modal.Footer>
 						<Button variant="outline-danger" onClick={this.handleClose}>Cancel</Button>
-						<Button variant="outline-success" onClick={this.dataUpdateAPI}>Submit</Button>
+						<Button variant="outline-success" onClick={this.updateUser}>Submit</Button>
 					</Modal.Footer>
 				</Modal>
 			</>
