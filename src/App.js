@@ -40,7 +40,7 @@ class App extends React.Component{
       <div className="flexContainer">
         <div className="users">
           <center><h2> User List </h2></center>
-          <AllUsers users={users} findUser={this.findUser} />
+          <AllUsers users={users} getUsers={this.getUsers} findUser={this.findUser} />
         </div>
         <div className="singleUser">
           <center><h2> Profile </h2></center>
